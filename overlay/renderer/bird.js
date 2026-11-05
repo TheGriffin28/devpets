@@ -658,7 +658,6 @@ class CodeBirdAnimator {
       const legSway = Math.sin(now * 0.016) * 3.5;
       if (this.crabLegs) this.crabLegs.setAttribute('transform', `translate(${legSway.toFixed(1)}, 0)`);
     }
-    }
   }
 
   updateBubblePlacement() {
