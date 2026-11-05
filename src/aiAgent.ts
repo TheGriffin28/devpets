@@ -5,6 +5,7 @@ import * as os from 'os';
 import {
   BirdSuggestion,
   ChatFileStep,
+  ChatImageAttachment,
   ChatTurn,
   CodeIssue,
   SelectionActionType,
@@ -512,7 +513,8 @@ Respond ONLY with a valid JSON object matching this exact schema:
     activeFileName: string,
     cursorLine: number,
     surroundingCode: string,
-    projectContext: string
+    projectContext: string,
+    image?: ChatImageAttachment
   ): Promise<{ answer: string; steps?: ChatFileStep[]; chatHistory: ChatTurn[]; providerUsed: string }> {
     const { provider, apiKey, customModel, ollamaUrl } = this.getConfig();
     const effectiveProvider = this.resolveProvider(provider, apiKey);
@@ -524,7 +526,7 @@ Respond ONLY with a valid JSON object matching this exact schema:
             .slice(-6)
             .map(
               (turn, idx) =>
-                `Turn ${idx + 1} User: ${turn.question}\nTurn ${idx + 1} Pip: ${turn.answer}${
+                `Turn ${idx + 1} User: ${turn.question}${turn.image ? ' [Attached Image]' : ''}\nTurn ${idx + 1} DevPets: ${turn.answer}${
                   turn.steps && turn.steps.length > 0
                     ? ` (Proposed steps for files: ${turn.steps.map((s) => s.targetFile).join(', ')})`
                     : ''
@@ -533,10 +535,15 @@ Respond ONLY with a valid JSON object matching this exact schema:
             .join('\n\n')
         : 'No previous conversation turns yet.';
 
+    const imageInstruction = image
+      ? `The user has attached an image (${image.name || 'image/screenshot'}). Carefully examine the visual design, layout, UI elements, buttons, inputs, colors, architecture, or error text shown in the image. Explain how to build this exact UI or resolve the error in this project, and generate complete code in the steps!`
+      : '';
+
     const prompt = [
-      `You are "Pip", a smart, project-aware AI coding bird in VS Code.`,
+      `You are "DevPets", a smart, project-aware AI desktop companion in VS Code.`,
       `The user is asking a question or requesting how to build/add something in their project.`,
-      `Scan the Project Context and Active File below carefully. If the user asks how to create/build/add a feature (e.g., "create login form", "show how in this project", "add api route", etc.) or asks a follow-up referring to the previous conversation:`,
+      imageInstruction,
+      `Scan the Project Context and Active File below carefully. If the user asks how to create/build/add a feature (e.g., "create login form", "show how in this project", "add api route", "build what is shown in this image", etc.) or asks a follow-up referring to the previous conversation:`,
       `1. Explain clearly in "answer" how it fits into their existing project files.`,
       `2. Populate "steps" with concrete step-by-step file actions:`,
       `   - Step 1 ("create"): Which new file to create (e.g., "LoginForm.tsx" or "loginForm.ts" matching the project's file types) and the complete ready-to-use code for it.`,
@@ -573,36 +580,38 @@ Respond ONLY with a valid JSON object matching this exact schema:
       `    }`,
       `  ]`,
       `}`
-    ].join('\n');
+    ].filter(Boolean).join('\n');
 
     let finalAnswer = '';
     let finalSteps: ChatFileStep[] = [];
-    let providerUsed = 'CodeBird Smart Engine';
+    let providerUsed = 'DevPets Smart Engine';
 
     try {
       let rawResponse: string | null = null;
 
       if (effectiveProvider === 'gemini' && apiKey) {
-        rawResponse = await this.callGeminiChatJson(prompt, apiKey, customModel || 'gemini-3.8-flash');
-        providerUsed = 'Gemini AI';
+        rawResponse = await this.callGeminiChatJson(prompt, apiKey, customModel || 'gemini-3.8-flash', image);
+        providerUsed = 'Gemini AI Vision';
       } else if (effectiveProvider === 'groq' && apiKey) {
         rawResponse = await this.callOpenAICompatibleText(
           'https://api.groq.com/openai/v1/chat/completions',
-          'You are Pip, a project-aware coding assistant that outputs valid JSON with "answer" and "steps".',
+          'You are DevPets, a project-aware coding assistant that outputs valid JSON with "answer" and "steps".',
           prompt,
           apiKey,
-          customModel || 'llama-3.3-70b-versatile'
+          customModel || 'llama-3.3-70b-versatile',
+          image
         );
         providerUsed = 'Groq AI';
       } else if (effectiveProvider === 'openai' && apiKey) {
         rawResponse = await this.callOpenAICompatibleText(
           'https://api.openai.com/v1/chat/completions',
-          'You are Pip, a project-aware coding assistant that outputs valid JSON with "answer" and "steps".',
+          'You are DevPets, a project-aware coding assistant that outputs valid JSON with "answer" and "steps".',
           prompt,
           apiKey,
-          customModel || 'gpt-4o-mini'
+          customModel || 'gpt-4o-mini',
+          image
         );
-        providerUsed = 'OpenAI';
+        providerUsed = 'OpenAI Vision';
       } else if (effectiveProvider === 'ollama' || effectiveProvider === 'auto') {
         rawResponse = await this.callOllamaText(prompt, ollamaUrl, customModel);
         providerUsed = 'Local Ollama';
@@ -625,13 +634,14 @@ Respond ONLY with a valid JSON object matching this exact schema:
       const localPlan = this.buildLocalProjectPlan(question, activeFileName, cursorLine, surroundingCode, projectContext);
       finalAnswer = localPlan.answer;
       finalSteps = localPlan.steps;
-      providerUsed = 'CodeBird Smart Engine';
+      providerUsed = 'DevPets Smart Engine';
     }
 
     const turn: ChatTurn = {
       id: `turn-${Date.now()}`,
       timestamp: Date.now(),
       question,
+      image,
       answer: finalAnswer,
       steps: finalSteps.length > 0 ? finalSteps : undefined,
       providerUsed
@@ -679,8 +689,26 @@ Respond ONLY with a valid JSON object matching this exact schema:
     return null;
   }
 
-  private async callGeminiChatJson(prompt: string, apiKey: string, model: string): Promise<string | null> {
+  private async callGeminiChatJson(
+    prompt: string,
+    apiKey: string,
+    model: string,
+    image?: ChatImageAttachment
+  ): Promise<string | null> {
     const endpoints = this.buildGeminiEndpoints(apiKey, model);
+
+    const parts: any[] = [{ text: prompt }];
+    if (image && image.dataUrl) {
+      const match = image.dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+      if (match) {
+        parts.push({
+          inlineData: {
+            mimeType: match[1] || image.mimeType || 'image/png',
+            data: match[2]
+          }
+        });
+      }
+    }
 
     for (const url of endpoints) {
       try {
@@ -689,13 +717,13 @@ Respond ONLY with a valid JSON object matching this exact schema:
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            contents: [{ role: 'user', parts }],
             generationConfig: {
               temperature: 0.25,
               responseMimeType: 'application/json'
             }
           }),
-          signal: AbortSignal.timeout(is38 ? 4500 : 25000)
+          signal: AbortSignal.timeout(is38 ? 6000 : 30000)
         });
         if (response.ok) {
           const data = (await response.json()) as any;
@@ -898,8 +926,17 @@ Respond ONLY with a valid JSON object matching this exact schema (no markdown fe
     systemPrompt: string,
     userQuestion: string,
     apiKey: string,
-    model: string
+    model: string,
+    image?: ChatImageAttachment
   ): Promise<string | null> {
+    let userContent: any = userQuestion;
+    if (image && image.dataUrl) {
+      userContent = [
+        { type: 'text', text: userQuestion },
+        { type: 'image_url', image_url: { url: image.dataUrl } }
+      ];
+    }
+
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -911,10 +948,10 @@ Respond ONLY with a valid JSON object matching this exact schema (no markdown fe
         temperature: 0.3,
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: userQuestion }
+          { role: 'user', content: userContent }
         ]
       }),
-      signal: AbortSignal.timeout(8000)
+      signal: AbortSignal.timeout(15000)
     });
 
     if (!response.ok) {

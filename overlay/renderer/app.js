@@ -50,6 +50,15 @@
   const askInput = document.getElementById('ask-input');
   const btnAskSend = document.getElementById('btn-ask-send');
 
+  const imagePreviewBar = document.getElementById('image-preview-bar');
+  const imagePreviewThumb = document.getElementById('image-preview-thumb');
+  const imagePreviewName = document.getElementById('image-preview-name');
+  const btnRemoveImage = document.getElementById('btn-remove-image');
+  const imageFileInput = document.getElementById('image-file-input');
+  const btnAttachImage = document.getElementById('btn-attach-image');
+
+  let attachedImage = null; // { dataUrl: string, mimeType: string, name: string }
+
   let currentCompanion = 'bird';
   let currentSuggestion = null;
   let hasActiveSelection = false;
@@ -96,6 +105,76 @@
       setActiveCompanion(selectCompanion.value, true);
     });
   }
+
+  // Image Attachment & Clipboard Paste Handlers
+  function setAttachedImageFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      attachedImage = {
+        dataUrl,
+        mimeType: file.type || 'image/png',
+        name: file.name || 'screenshot.png'
+      };
+      if (imagePreviewThumb) imagePreviewThumb.src = dataUrl;
+      if (imagePreviewName) imagePreviewName.textContent = attachedImage.name;
+      if (imagePreviewBar) imagePreviewBar.classList.remove('hidden');
+      askInput.focus();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearAttachedImage() {
+    attachedImage = null;
+    if (imagePreviewThumb) imagePreviewThumb.src = '';
+    if (imagePreviewBar) imagePreviewBar.classList.add('hidden');
+    if (imageFileInput) imageFileInput.value = '';
+  }
+
+  if (btnAttachImage && imageFileInput) {
+    btnAttachImage.addEventListener('click', () => {
+      imageFileInput.click();
+    });
+    imageFileInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        setAttachedImageFile(file);
+      }
+    });
+  }
+
+  if (btnRemoveImage) {
+    btnRemoveImage.addEventListener('click', clearAttachedImage);
+  }
+
+  // Support Ctrl+V directly in askInput or anywhere in the overlay window
+  function handleClipboardPaste(e) {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith('image/')) {
+        const file = items[i].getAsFile();
+        if (file) {
+          setAttachedImageFile(file);
+          e.preventDefault();
+          break;
+        }
+      }
+    }
+  }
+
+  askInput.addEventListener('paste', handleClipboardPaste);
+  window.addEventListener('paste', (e) => {
+    if (e.target !== askInput && e.clipboardData && e.clipboardData.items) {
+      for (let i = 0; i < e.clipboardData.items.length; i++) {
+        if (e.clipboardData.items[i].type.startsWith('image/')) {
+          handleClipboardPaste(e);
+          break;
+        }
+      }
+    }
+  });
 
   // 1. Setup Electron Click-Through Pass-Through & 60 FPS OS Mouse Tracking
   if (window.electronOverlay) {
@@ -316,6 +395,15 @@
       userEl.className = 'chat-user-msg';
       userEl.textContent = `You: ${turn.question}`;
       card.appendChild(userEl);
+
+      if (turn.image && turn.image.dataUrl) {
+        const imgEl = document.createElement('img');
+        imgEl.className = 'chat-turn-image';
+        imgEl.src = turn.image.dataUrl;
+        imgEl.alt = turn.image.name || 'Attached image';
+        imgEl.title = 'Attached Image';
+        card.appendChild(imgEl);
+      }
 
       const aiEl = document.createElement('div');
       aiEl.className = 'chat-ai-msg';
@@ -785,11 +873,17 @@
 
   function submitQuestion() {
     const q = askInput.value.trim();
-    if (!q) return;
+    if (!q && !attachedImage) return;
+
+    const questionText = q || 'Analyze this image and explain how to build/implement it in this project.';
     askInput.value = '';
+    const imgToSend = attachedImage;
+    clearAttachedImage();
+
     sendToExtension({
       type: 'ask_bird',
-      question: q
+      question: questionText,
+      image: imgToSend || undefined
     });
   }
 

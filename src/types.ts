@@ -27,10 +27,17 @@ export interface ChatFileStep {
   code: string;
 }
 
+export interface ChatImageAttachment {
+  dataUrl: string; // Base64 data URI (e.g. data:image/png;base64,...)
+  mimeType: string;
+  name?: string;
+}
+
 export interface ChatTurn {
   id: string;
   timestamp: number;
   question: string;
+  image?: ChatImageAttachment;
   answer: string;
   steps?: ChatFileStep[];
   providerUsed: string;
@@ -181,6 +188,7 @@ export type ExtensionToOverlayMessage =
   | {
       type: 'chat_reply';
       question: string;
+      image?: ChatImageAttachment;
       answer: string;
       steps?: ChatFileStep[];
       chatHistory: ChatTurn[];
@@ -230,6 +238,7 @@ export type OverlayToExtensionMessage =
   | {
       type: 'ask_bird';
       question: string;
+      image?: ChatImageAttachment;
     }
   | {
       type: 'request_file_review';

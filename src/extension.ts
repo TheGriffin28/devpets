@@ -417,7 +417,9 @@ export async function activate(context: vscode.ExtensionContext) {
         bridge.broadcast({
           type: 'mood_change',
           mood: 'thinking',
-          speechText: 'Scanning project files & building your implementation plan...'
+          speechText: msg.image
+            ? 'Analyzing attached image & generating implementation plan...'
+            : 'Scanning project files & building your implementation plan...'
         });
 
         await workspaceTracker.scanWorkspace();
@@ -428,12 +430,14 @@ export async function activate(context: vscode.ExtensionContext) {
           activeFileName,
           cursorLine,
           surroundingCode,
-          projectContext
+          projectContext,
+          msg.image
         );
 
         bridge.broadcast({
           type: 'chat_reply',
           question: msg.question,
+          image: msg.image,
           answer: reply.answer,
           steps: reply.steps,
           chatHistory: reply.chatHistory,

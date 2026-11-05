@@ -444,15 +444,26 @@
         </div>
       </div>
 
-      <!-- Quick Ask Pip Input Footer -->
+      <!-- Attached Image Preview Container -->
+      <div id="image-preview-bar" class="image-preview-bar hidden">
+        <div class="image-preview-chip">
+          <img id="image-preview-thumb" class="image-preview-thumb" src="" alt="preview" />
+          <span id="image-preview-name" class="image-preview-name">screenshot.png</span>
+          <button id="btn-remove-image" class="btn-remove-image" title="Remove image">✕</button>
+        </div>
+      </div>
+
+      <!-- Quick Ask Input Footer -->
       <div class="bubble-footer">
+        <input type="file" id="image-file-input" accept="image/*" class="hidden" />
+        <button id="btn-attach-image" class="btn-attach" title="Attach an image / screenshot (or paste with Ctrl+V)">📷</button>
         <input
           id="ask-input"
           type="text"
-          placeholder="Ask Pip about this line or project..."
+          placeholder="Ask DevPets or paste image (Ctrl+V)..."
           autocomplete="off"
         />
-        <button id="btn-ask-send" class="btn-send" title="Ask Pip">➤</button>
+        <button id="btn-ask-send" class="btn-send" title="Send question">➤</button>
       </div>
     </div>
   </div>
