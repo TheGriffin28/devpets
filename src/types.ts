@@ -14,7 +14,7 @@ export type RoamMode = 'free-roam' | 'follow-mouse' | 'perch';
 
 export type StealthMode = 'off' | 'ghost' | 'peek' | 'auto-heal' | 'screen-shield';
 
-export type CompanionType = 'bird' | 'cat' | 'bot' | 'fox' | 'frog' | 'ghost';
+export type CompanionType = 'bird' | 'cat' | 'bot' | 'fox' | 'frog' | 'ghost' | 'chicken' | 'crab';
 
 export type SelectionActionType = 'refactor' | 'try-catch' | 'add-comments' | 'explain';
 

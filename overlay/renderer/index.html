@@ -80,6 +80,26 @@
             <stop offset="100%" stop-color="#cffafe" />
           </linearGradient>
 
+          <!-- Chicken Gradients -->
+          <linearGradient id="chickenBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f8fafc" />
+          </linearGradient>
+          <linearGradient id="chickenCombGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ef4444" />
+            <stop offset="100%" stop-color="#dc2626" />
+          </linearGradient>
+
+          <!-- Crab Gradients -->
+          <linearGradient id="crabShellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#f87171" />
+            <stop offset="100%" stop-color="#dc2626" />
+          </linearGradient>
+          <linearGradient id="crabBellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffedd5" />
+            <stop offset="100%" stop-color="#fed7aa" />
+          </linearGradient>
+
           <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#0f172a" flood-opacity="0.38" />
           </filter>
@@ -313,6 +333,115 @@
           </g>
           <path d="M 67 71 Q 70 74 73 71" stroke="#0f172a" stroke-width="1.6" fill="none" stroke-linecap="round" />
         </g>
+
+        <!-- 7. CHICKEN RIG (Chicky) -->
+        <g id="rig-chicken" class="companion-rig hidden" filter="url(#softShadow)">
+          <!-- Yellow Feet -->
+          <g id="chicken-feet">
+            <path d="M 54 108 L 48 119 M 54 108 L 54 120 M 54 108 L 60 119" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 86 108 L 80 119 M 86 108 L 86 120 M 86 108 L 92 119" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <!-- Wings -->
+          <g id="chicken-wing-left" transform="translate(36, 72)">
+            <path d="M 6 -8 C -14 -4, -18 20, -4 28 C 4 32, 12 18, 10 4 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2" />
+          </g>
+          <g id="chicken-wing-right" transform="translate(104, 72)">
+            <path d="M -6 -8 C 14 -4, 18 20, 4 28 C -4 32, -12 18, -10 4 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2" />
+          </g>
+          <!-- Tail Feathers -->
+          <path d="M 98 64 C 112 56, 118 46, 112 40 C 106 36, 100 50, 96 66 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2" />
+          <!-- Chicken Body & Belly -->
+          <ellipse id="chicken-body" cx="70" cy="76" rx="36" ry="34" fill="url(#chickenBodyGrad)" stroke="#e2e8f0" stroke-width="1.2" />
+          <ellipse cx="70" cy="85" rx="25" ry="22" fill="#ffffff" />
+          <!-- Red Comb on Head -->
+          <g id="chicken-comb" transform="translate(70, 42)">
+            <path d="M -12 0 C -16 -16, -6 -18, -2 -10 C 2 -22, 10 -20, 8 -8 C 12 -16, 18 -12, 14 0 Z" fill="url(#chickenCombGrad)" stroke="#b91c1c" stroke-width="1" />
+          </g>
+          <!-- Red Wattle under beak -->
+          <g id="chicken-wattle" transform="translate(70, 76)">
+            <ellipse cx="-4" cy="4" rx="4" ry="6" fill="#dc2626" />
+            <ellipse cx="4" cy="4" rx="4" ry="6" fill="#dc2626" />
+          </g>
+          <!-- Beak -->
+          <polygon id="chicken-beak" points="63,64 77,64 70,74" fill="#f59e0b" stroke="#d97706" stroke-width="1" />
+          <!-- Cheeks -->
+          <ellipse cx="46" cy="70" rx="5.5" ry="3.5" fill="#fda4af" opacity="0.65" />
+          <ellipse cx="94" cy="70" rx="5.5" ry="3.5" fill="#fda4af" opacity="0.65" />
+          <!-- Eyes -->
+          <g id="chicken-eyes-open">
+            <circle cx="53" cy="58" r="8.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.4" />
+            <g id="chicken-pupil-left">
+              <circle cx="53" cy="58" r="5" fill="#0f172a" />
+              <circle cx="55" cy="56" r="1.6" fill="#ffffff" />
+            </g>
+            <circle cx="87" cy="58" r="8.5" fill="#ffffff" stroke="#0f172a" stroke-width="1.4" />
+            <g id="chicken-pupil-right">
+              <circle cx="87" cy="58" r="5" fill="#0f172a" />
+              <circle cx="89" cy="56" r="1.6" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="chicken-eyes-happy" class="hidden">
+            <path d="M 46 58 Q 53 50 60 58" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <path d="M 80 58 Q 87 50 94 58" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          </g>
+        </g>
+
+        <!-- 8. CRAB RIG (Shelly) -->
+        <g id="rig-crab" class="companion-rig hidden" filter="url(#softShadow)">
+          <!-- 6 Walking Legs -->
+          <g id="crab-legs">
+            <path d="M 38 80 Q 22 84 18 96" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 36 86 Q 20 92 18 104" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 38 92 Q 22 100 24 110" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 102 80 Q 118 84 122 96" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 104 86 Q 120 92 122 104" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 102 92 Q 118 100 116 110" stroke="#ef4444" stroke-width="3.2" stroke-linecap="round" fill="none" />
+          </g>
+          <!-- Left Arm & Claw -->
+          <g id="crab-claw-left" transform="translate(32, 60)">
+            <path d="M 12 18 Q 0 16 -6 4" stroke="#dc2626" stroke-width="4" stroke-linecap="round" fill="none" />
+            <!-- Upper Pincer -->
+            <path id="crab-pincer-left" d="M -6 4 C -18 -8, -16 -20, -2 -14 C 2 -6, 2 0, -6 4 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2" />
+            <!-- Lower Pincer -->
+            <path d="M -6 4 C -14 12, -4 20, 2 12 C 4 6, 2 2, -6 4 Z" fill="#dc2626" />
+          </g>
+          <!-- Right Arm & Claw -->
+          <g id="crab-claw-right" transform="translate(108, 60)">
+            <path d="M -12 18 Q 0 16 6 4" stroke="#dc2626" stroke-width="4" stroke-linecap="round" fill="none" />
+            <!-- Upper Pincer -->
+            <path id="crab-pincer-right" d="M 6 4 C 18 -8, 16 -20, 2 -14 C -2 -6, -2 0, 6 4 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="1.2" />
+            <!-- Lower Pincer -->
+            <path d="M 6 4 C 14 12, 4 20, -2 12 C -4 6, -2 2, 6 4 Z" fill="#dc2626" />
+          </g>
+          <!-- Crab Main Shell -->
+          <ellipse id="crab-shell" cx="70" cy="80" rx="38" ry="26" fill="url(#crabShellGrad)" stroke="#b91c1c" stroke-width="1.5" />
+          <ellipse cx="70" cy="84" rx="26" ry="18" fill="url(#crabBellyGrad)" />
+          <!-- Eyestalks -->
+          <rect x="49" y="46" width="6" height="18" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="1" />
+          <rect x="85" y="46" width="6" height="18" rx="3" fill="#ef4444" stroke="#b91c1c" stroke-width="1" />
+          <!-- Rosy Cheeks -->
+          <ellipse cx="48" cy="84" rx="5" ry="3.5" fill="#f43f5e" opacity="0.6" />
+          <ellipse cx="92" cy="84" rx="5" ry="3.5" fill="#f43f5e" opacity="0.6" />
+          <!-- Smile -->
+          <path d="M 65 85 Q 70 89 75 85" stroke="#7f1d1d" stroke-width="2" fill="none" stroke-linecap="round" />
+          <!-- Stalk Eyes -->
+          <g id="crab-eyes-open">
+            <circle cx="52" cy="46" r="10" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+            <g id="crab-pupil-left">
+              <circle cx="52" cy="46" r="5.5" fill="#0f172a" />
+              <circle cx="54" cy="44" r="1.8" fill="#ffffff" />
+            </g>
+            <circle cx="88" cy="46" r="10" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+            <g id="crab-pupil-right">
+              <circle cx="88" cy="46" r="5.5" fill="#0f172a" />
+              <circle cx="90" cy="44" r="1.8" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="crab-eyes-happy" class="hidden">
+            <path d="M 45 46 Q 52 38 59 46" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 81 46 Q 88 38 95 46" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+        </g>
       </svg>
 
       <!-- Mini Live Radar Pill under the bird showing active file & line -->
@@ -409,6 +538,8 @@
             <option value="fox">🦊 Rusty (Red Fox)</option>
             <option value="frog">🐸 Kero (Zen Frog)</option>
             <option value="ghost">👻 Boo (Lil Ghost)</option>
+            <option value="chicken">🐔 Chicky (The Chicken)</option>
+            <option value="crab">🦀 Shelly (The Tiny Crab)</option>
           </select>
         </div>
         <div class="form-row">

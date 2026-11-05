@@ -73,6 +73,8 @@ function updateStatusBar() {
     comp === 'fox' ? 'Rusty' :
     comp === 'frog' ? 'Kero' :
     comp === 'ghost' ? 'Boo' :
+    comp === 'chicken' ? 'Chicky' :
+    comp === 'crab' ? 'Shelly' :
     'Pip';
   const compIcon =
     comp === 'cat' ? '🐱' :
@@ -80,6 +82,8 @@ function updateStatusBar() {
     comp === 'fox' ? '🦊' :
     comp === 'frog' ? '🐸' :
     comp === 'ghost' ? '👻' :
+    comp === 'chicken' ? '🐔' :
+    comp === 'crab' ? '🦀' :
     '🐦';
 
   const issueBadge =
@@ -665,7 +669,9 @@ export async function activate(context: vscode.ExtensionContext) {
           { label: `${current === 'bot' ? '$(check) ' : ''}🤖 Byte (Mini Robot)`, description: 'Retro tech bot with glowing antenna & digital LED visor eyes', comp: 'bot' as CompanionType },
           { label: `${current === 'fox' ? '$(check) ' : ''}🦊 Rusty (Red Fox)`, description: 'Sharp bug hunter with perked ears & fluffy tail', comp: 'fox' as CompanionType },
           { label: `${current === 'frog' ? '$(check) ' : ''}🐸 Kero (Zen Frog)`, description: 'Calm frog with a tiny lotus leaf cap & puffing cheeks', comp: 'frog' as CompanionType },
-          { label: `${current === 'ghost' ? '$(check) ' : ''}👻 Boo (Lil Ghost)`, description: 'Cute marshmallow floating ghost with soft ethereal glow', comp: 'ghost' as CompanionType }
+          { label: `${current === 'ghost' ? '$(check) ' : ''}👻 Boo (Lil Ghost)`, description: 'Cute marshmallow floating ghost with soft ethereal glow', comp: 'ghost' as CompanionType },
+          { label: `${current === 'chicken' ? '$(check) ' : ''}🐔 Chicky (Plump Chicken)`, description: 'Fluffy chicken with bouncing red comb & wing flaps', comp: 'chicken' as CompanionType },
+          { label: `${current === 'crab' ? '$(check) ' : ''}🦀 Shelly (Tiny Crab)`, description: 'Cute coral crab with snapping pincers & perked stalk eyes', comp: 'crab' as CompanionType }
         ],
         { placeHolder: `Current Companion: ${current.toUpperCase()} — Choose your floating buddy:` }
       );
@@ -850,11 +856,13 @@ export async function activate(context: vscode.ExtensionContext) {
           bot: '🤖 Byte (Mini Robot)',
           fox: '🦊 Rusty (Red Fox)',
           frog: '🐸 Kero (Zen Frog)',
-          ghost: '👻 Boo (Lil Ghost)'
+          ghost: '👻 Boo (Lil Ghost)',
+          chicken: '🐔 Chicky (Chicken)',
+          crab: '🦀 Shelly (Tiny Crab)'
         };
         items.push({
           label: `🐾 Choose Companion: Current is ${compLabels[comp]}`,
-          description: 'Switch between Pip 🐦, Mochi 🐱, Byte 🤖, Rusty 🦊, Kero 🐸, Boo 👻',
+          description: 'Switch between Pip 🐦, Mochi 🐱, Byte 🤖, Rusty 🦊, Kero 🐸, Boo 👻, Chicky 🐔, Shelly 🦀',
           action: 'choose-companion'
         });
 

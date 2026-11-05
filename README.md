@@ -23,7 +23,7 @@
 
 ## ✨ Features at a Glance
 
-- 🐾 **6 Distinct Companions:** Switch on the fly between Pip the Bird, Mochi the Cat, Byte the Bot, Rusty the Fox, Kero the Frog, and Boo the Ghost.
+- 🐾 **8 Distinct Companions:** Switch on the fly between Pip the Bird, Mochi the Cat, Byte the Bot, Rusty the Fox, Kero the Frog, Boo the Ghost, Chicky the Chicken, and Shelly the Tiny Crab.
 - 👁️ **Real-Time 60 FPS Eye Tracking:** Companions smoothly follow your OS mouse cursor across all monitors.
 - 🪺 **3 Movement Behaviors:** Free-roaming, cursor-following, or perching above your active code line.
 - 🕵️ **5 Stealth Modes:** From normal visible companion to Screen-Share Invisible Shield and Silent Auto-Healer.
@@ -45,6 +45,8 @@ All DevPets are rendered as compact vector SVG rigs (~66px) that never cover edi
 | 🦊 | **Rusty** | *The Red Fox* | Swaying white-tipped tail, alert perked ears, autumn leaf particles |
 | 🐸 | **Kero** | *The Zen Frog* | Tilting lotus leaf cap, gentle breathing belly, lily pad & dewdrop particles |
 | 👻 | **Boo** | *The Lil Ghost* | Floating wavy arms, gentle marshmallow ripple, star & sparkle particles |
+| 🐔 | **Chicky** | *The Chicken* | Wobbly red crown comb, flapping wings, swinging wattle, pecking beak bob, grain & egg particles |
+| 🦀 | **Shelly** | *The Tiny Crab* | Snapping dual pincers, perked stalk eyes, 6-legged scuttling rhythm, sea bubble & shell particles |
 
 > **Double-click any pet** to pet them and trigger their unique emoji shower!
 
@@ -117,7 +119,7 @@ npm run install-all
 | <kbd>Alt</kbd> + <kbd>S</kbd> | `DevPets: Switch Stealth Mode` | Opens quick stealth picker & companion menu |
 | <kbd>Alt</kbd> + <kbd>M</kbd> | `DevPets: Switch Roaming Mode` | Toggle between Free Roam, Follow Mouse, and Perch |
 | <kbd>Alt</kbd> + <kbd>H</kbd> | `DevPets: Send Pet to Sleep` | Hides the floating overlay window |
-| — | `DevPets: Choose Companion` | Choose between Pip, Mochi, Byte, Rusty, Kero, Boo |
+| — | `DevPets: Choose Companion` | Choose between Pip, Mochi, Byte, Rusty, Kero, Boo, Chicky, Shelly |
 | — | `DevPets: Fix All in File` | Auto-heals every detected error in the active document |
 | — | `DevPets: Configure AI` | Interactive wizard for Gemini / Groq / OpenAI / Ollama |
 
@@ -129,7 +131,7 @@ Open your IDE Settings (<kbd>Ctrl</kbd> + <kbd>,</kbd>) and search for `devpets`
 
 | Setting | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `codebird.companion` | `string` | `"bird"` | Active pet: `bird`, `cat`, `bot`, `fox`, `frog`, `ghost` |
+| `codebird.companion` | `string` | `"bird"` | Active pet: `bird`, `cat`, `bot`, `fox`, `frog`, `ghost`, `chicken`, `crab` |
 | `codebird.stealthMode` | `string` | `"off"` | Active stealth mode: `off`, `peek`, `screen-shield`, `auto-heal`, `ghost` |
 | `codebird.roamMode` | `string` | `"free-roam"` | Movement style: `free-roam`, `follow-mouse`, `perch` |
 | `codebird.aiProvider` | `string` | `"auto"` | AI engine: `auto`, `gemini`, `groq`, `openai`, `ollama`, `local-smart` |

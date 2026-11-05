@@ -3,13 +3,15 @@ class CodeBirdAnimator {
     this.stageEl = document.getElementById('bird-stage');
     this.charEl = document.getElementById('bird-character');
 
-    // 6 Companion Rigs
+    // 8 Companion Rigs
     this.rigBird = document.getElementById('rig-bird');
     this.rigCat = document.getElementById('rig-cat');
     this.rigBot = document.getElementById('rig-bot');
     this.foxRig = document.getElementById('rig-fox');
     this.frogRig = document.getElementById('rig-frog');
     this.ghostRig = document.getElementById('rig-ghost');
+    this.chickenRig = document.getElementById('rig-chicken');
+    this.crabRig = document.getElementById('rig-crab');
 
     this.rigs = {
       bird: this.rigBird,
@@ -17,7 +19,9 @@ class CodeBirdAnimator {
       bot: this.rigBot,
       fox: this.foxRig,
       frog: this.frogRig,
-      ghost: this.ghostRig
+      ghost: this.ghostRig,
+      chicken: this.chickenRig,
+      crab: this.crabRig
     };
 
     this.companion = 'bird';
@@ -77,6 +81,28 @@ class CodeBirdAnimator {
     this.ghostPupilRight = document.getElementById('ghost-pupil-right');
     this.ghostEyesOpen = document.getElementById('ghost-eyes-open');
     this.ghostEyesHappy = document.getElementById('ghost-eyes-happy');
+
+    // 7. Chicken Rig Parts
+    this.chickenComb = document.getElementById('chicken-comb');
+    this.chickenWattle = document.getElementById('chicken-wattle');
+    this.chickenWingLeft = document.getElementById('chicken-wing-left');
+    this.chickenWingRight = document.getElementById('chicken-wing-right');
+    this.chickenBeak = document.getElementById('chicken-beak');
+    this.chickenPupilLeft = document.getElementById('chicken-pupil-left');
+    this.chickenPupilRight = document.getElementById('chicken-pupil-right');
+    this.chickenEyesOpen = document.getElementById('chicken-eyes-open');
+    this.chickenEyesHappy = document.getElementById('chicken-eyes-happy');
+
+    // 8. Crab Rig Parts
+    this.crabClawLeft = document.getElementById('crab-claw-left');
+    this.crabClawRight = document.getElementById('crab-claw-right');
+    this.crabPincerLeft = document.getElementById('crab-pincer-left');
+    this.crabPincerRight = document.getElementById('crab-pincer-right');
+    this.crabLegs = document.getElementById('crab-legs');
+    this.crabPupilLeft = document.getElementById('crab-pupil-left');
+    this.crabPupilRight = document.getElementById('crab-pupil-right');
+    this.crabEyesOpen = document.getElementById('crab-eyes-open');
+    this.crabEyesHappy = document.getElementById('crab-eyes-happy');
 
     // Shared UI
     this.badgeEl = document.getElementById('bird-badge');
@@ -142,7 +168,9 @@ class CodeBirdAnimator {
       bot: 'Byte the Mini Bot 🤖',
       fox: 'Rusty the Red Fox 🦊',
       frog: 'Kero the Zen Frog 🐸',
-      ghost: 'Boo the Lil Ghost 👻'
+      ghost: 'Boo the Lil Ghost 👻',
+      chicken: 'Chicky the Chicken 🐔',
+      crab: 'Shelly the Tiny Crab 🦀'
     };
     if (this.charEl) {
       this.charEl.setAttribute('title', titles[type] || 'CodeBird Companion');
@@ -154,7 +182,9 @@ class CodeBirdAnimator {
       bot: ['⚡', '💡', '🤖'],
       fox: ['🦊', '🍂', '✨'],
       frog: ['🐸', '🍃', '💧'],
-      ghost: ['👻', '⭐', '✨']
+      ghost: ['👻', '⭐', '✨'],
+      chicken: ['🐔', '🌾', '🥚', '✨'],
+      crab: ['🦀', '🫧', '🌊', '🐚']
     };
     const sparks = particles[type] || ['✨'];
     for (let i = 0; i < 3; i++) {
@@ -249,7 +279,9 @@ class CodeBirdAnimator {
       bot: ['⚡', '💡', '🤖', '✨'],
       fox: ['💖', '🦊', '🍂', '✨'],
       frog: ['🐸', '🍃', '✨', '💧'],
-      ghost: ['👻', '⭐', '✨', '💫']
+      ghost: ['👻', '⭐', '✨', '💫'],
+      chicken: ['💖', '🐔', '🌾', '🥚', '✨'],
+      crab: ['💖', '🦀', '🫧', '🐚', '🌊']
     };
     const list = hearts[this.companion] || ['💖', '✨'];
     for (let i = 0; i < 4; i++) {
@@ -267,7 +299,9 @@ class CodeBirdAnimator {
       [this.botEyesOpen, this.botEyesHappy],
       [this.foxEyesOpen, this.foxEyesHappy],
       [this.frogEyesOpen, this.frogEyesHappy],
-      [this.ghostEyesOpen, this.ghostEyesHappy]
+      [this.ghostEyesOpen, this.ghostEyesHappy],
+      [this.chickenEyesOpen, this.chickenEyesHappy],
+      [this.crabEyesOpen, this.crabEyesHappy]
     ];
     pairs.forEach(([openEl, happyEl]) => {
       if (openEl && happyEl) {
@@ -482,6 +516,12 @@ class CodeBirdAnimator {
     } else if (this.companion === 'ghost') {
       if (this.ghostPupilLeft) this.ghostPupilLeft.setAttribute('transform', `translate(${px}, ${py})`);
       if (this.ghostPupilRight) this.ghostPupilRight.setAttribute('transform', `translate(${px}, ${py})`);
+    } else if (this.companion === 'chicken') {
+      if (this.chickenPupilLeft) this.chickenPupilLeft.setAttribute('transform', `translate(${px}, ${py})`);
+      if (this.chickenPupilRight) this.chickenPupilRight.setAttribute('transform', `translate(${px}, ${py})`);
+    } else if (this.companion === 'crab') {
+      if (this.crabPupilLeft) this.crabPupilLeft.setAttribute('transform', `translate(${px}, ${py})`);
+      if (this.crabPupilRight) this.crabPupilRight.setAttribute('transform', `translate(${px}, ${py})`);
     }
 
     // 3. Natural Blinking across all companions
@@ -569,6 +609,55 @@ class CodeBirdAnimator {
       // Soft float ripple
       const ghostSquash = 1 + Math.sin(now * 0.004) * 0.06;
       if (this.ghostBody) this.ghostBody.setAttribute('transform', `translate(70, 72) scale(1, ${ghostSquash.toFixed(2)}) translate(-70, -72)`);
+    } else if (this.companion === 'chicken') {
+      // Comb wobble & bounce
+      const combWobble = Math.sin(now * 0.008) * 8 + bankAngle * 0.4;
+      if (this.chickenComb) this.chickenComb.setAttribute('transform', `translate(70, 42) rotate(${combWobble.toFixed(1)})`);
+
+      // Wattle swing
+      const wattleSwing = Math.sin(now * 0.01) * 7;
+      if (this.chickenWattle) this.chickenWattle.setAttribute('transform', `translate(70, 76) rotate(${wattleSwing.toFixed(1)})`);
+
+      // Wings flap / peck flutter
+      let wingAngle = 0;
+      if (isFlying) {
+        wingAngle = Math.sin(now * 0.034) * 34;
+      } else if (this.mood === 'happy' || this.mood === 'alert-error') {
+        wingAngle = Math.sin(now * 0.026) * 22;
+      } else {
+        wingAngle = Math.sin(now * 0.004) * 5;
+      }
+      if (this.chickenWingLeft) this.chickenWingLeft.setAttribute('transform', `translate(36, 72) rotate(${wingAngle.toFixed(1)}, 6, 4)`);
+      if (this.chickenWingRight) this.chickenWingRight.setAttribute('transform', `translate(104, 72) rotate(${(-wingAngle).toFixed(1)}, -6, 4)`);
+
+      // Beak pecking bob when talking
+      if (this.isTalking && wallTime < this.talkUntil) {
+        const peck = Math.abs(Math.sin(now * 0.028)) * 3;
+        if (this.chickenBeak) this.chickenBeak.setAttribute('transform', `translate(0, ${peck.toFixed(1)})`);
+      } else {
+        if (this.chickenBeak) this.chickenBeak.setAttribute('transform', 'translate(0, 0)');
+      }
+    } else if (this.companion === 'crab') {
+      // Claws swaying & bobbing
+      const clawAngleLeft = Math.sin(now * 0.006) * 10 + (isFlying ? Math.sin(now * 0.024) * 18 : 0);
+      const clawAngleRight = Math.cos(now * 0.006) * 10 + (isFlying ? Math.cos(now * 0.024) * 18 : 0);
+      if (this.crabClawLeft) this.crabClawLeft.setAttribute('transform', `translate(32, 60) rotate(${clawAngleLeft.toFixed(1)}, 12, 18)`);
+      if (this.crabClawRight) this.crabClawRight.setAttribute('transform', `translate(108, 60) rotate(${(-clawAngleRight).toFixed(1)}, -12, 18)`);
+
+      // Pincers snapping (happy, alert, or talking snappy clicks)
+      const snapLeft = (this.mood === 'happy' || this.isTalking)
+        ? Math.sin(now * 0.025) * 12
+        : Math.sin(now * 0.008) * 5;
+      const snapRight = (this.mood === 'happy' || this.isTalking)
+        ? Math.cos(now * 0.025) * 12
+        : Math.cos(now * 0.008) * 5;
+      if (this.crabPincerLeft) this.crabPincerLeft.setAttribute('transform', `rotate(${snapLeft.toFixed(1)}, -6, 4)`);
+      if (this.crabPincerRight) this.crabPincerRight.setAttribute('transform', `rotate(${(-snapRight).toFixed(1)}, 6, 4)`);
+
+      // 6 Walking legs scuttling rhythm
+      const legSway = Math.sin(now * 0.016) * 3.5;
+      if (this.crabLegs) this.crabLegs.setAttribute('transform', `translate(${legSway.toFixed(1)}, 0)`);
+    }
     }
   }
 

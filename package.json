@@ -41,7 +41,7 @@
     "commands": [
       {
         "command": "codebird.chooseCompanion",
-        "title": "DevPets: Choose Companion (Pip / Mochi / Byte / Rusty / Kero / Boo)"
+        "title": "DevPets: Choose Companion (Pip / Mochi / Byte / Rusty / Kero / Boo / Chicky / Shelly)"
       },
       {
         "command": "codebird.toggleEnable",
@@ -118,7 +118,9 @@
             "bot",
             "fox",
             "frog",
-            "ghost"
+            "ghost",
+            "chicken",
+            "crab"
           ],
           "enumDescriptions": [
             "🐦 Pip (Bluebird) — Flapping wings, crest bounce & chattering beak",
@@ -126,10 +128,12 @@
             "🤖 Byte (Mini Bot) — Pulsing beacon, antenna & glowing cyan LED visor",
             "🦊 Rusty (Red Fox) — Swaying fluffy tail & pointed perked ears",
             "🐸 Kero (Zen Frog) — Tilting lotus leaf cap & gentle breathing belly",
-            "👻 Boo (Lil Ghost) — Floating wavy arms & soft ethereal float ripple"
+            "👻 Boo (Lil Ghost) — Floating wavy arms & soft ethereal float ripple",
+            "🐔 Chicky (Chicken) — Bouncing red comb, pecking head bob & wing flaps",
+            "🦀 Shelly (Tiny Crab) — Snapping pincers, perked stalk eyes & scuttling sway"
           ],
           "default": "bird",
-          "description": "Choose your floating AI coding companion: 'bird' (Pip), 'cat' (Mochi), 'bot' (Byte), 'fox' (Rusty), 'frog' (Kero), or 'ghost' (Boo)."
+          "description": "Choose your floating AI coding companion: 'bird' (Pip), 'cat' (Mochi), 'bot' (Byte), 'fox' (Rusty), 'frog' (Kero), 'ghost' (Boo), 'chicken' (Chicky), or 'crab' (Shelly)."
         },
         "codebird.stealthMode": {
           "type": "string",
