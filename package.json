@@ -1,0 +1,217 @@
+{
+  "name": "devpets",
+  "displayName": "DevPets - Free-Roaming AI Desktop Companions for Developers",
+  "description": "Cute, free-roaming floating AI desktop pets that track your mouse, watch your code in real time, spot bugs, and stealthily repair issues.",
+  "version": "1.0.0",
+  "publisher": "devpets",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saurav/devpets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saurav/devpets/issues"
+  },
+  "homepage": "https://github.com/saurav/devpets#readme",
+  "keywords": [
+    "devpets",
+    "desktop-pet",
+    "ai-companion",
+    "ai-assistant",
+    "gemini",
+    "linter",
+    "code-repair",
+    "refactor",
+    "stealth-mode"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codebird.chooseCompanion",
+        "title": "DevPets: Choose Companion (Pip / Mochi / Byte / Rusty / Kero / Boo)"
+      },
+      {
+        "command": "codebird.toggleEnable",
+        "title": "DevPets: Enable / Disable Everywhere"
+      },
+      {
+        "command": "codebird.summon",
+        "title": "DevPets: Summon / Wake Floating Pet"
+      },
+      {
+        "command": "codebird.hide",
+        "title": "DevPets: Send Pet to Sleep (Hide Overlay)"
+      },
+      {
+        "command": "codebird.analyzeCurrentFile",
+        "title": "DevPets: Ask Pet to Review Current File & Line"
+      },
+      {
+        "command": "codebird.analyzeProject",
+        "title": "DevPets: Scan Project Files for Issues & Next Steps"
+      },
+      {
+        "command": "codebird.toggleMode",
+        "title": "DevPets: Switch Roaming Mode (Free Roam / Follow Mouse / Perch)"
+      },
+      {
+        "command": "codebird.switchStealthMode",
+        "title": "DevPets: Switch Stealth Mode (Off / Ghost / Peek-on-Error / Auto-Healer / Screen-Share Shield)"
+      },
+      {
+        "command": "codebird.fixAllInFile",
+        "title": "DevPets: Fix All Detected Issues in Current File"
+      },
+      {
+        "command": "codebird.configureAI",
+        "title": "DevPets: Configure AI Provider & API Key"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "codebird.toggleMode",
+        "key": "alt+m",
+        "mac": "alt+m"
+      },
+      {
+        "command": "codebird.switchStealthMode",
+        "key": "alt+s",
+        "mac": "alt+s"
+      },
+      {
+        "command": "codebird.hide",
+        "key": "alt+h",
+        "mac": "alt+h"
+      }
+    ],
+    "configuration": {
+      "title": "DevPets AI",
+      "properties": {
+        "codebird.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Master switch: Enable or disable DevPets floating companion overlay."
+        },
+        "codebird.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically launch the floating bird when VS Code / Cursor / Antigravity starts. If disabled, Pip stays asleep until you summon him."
+        },
+        "codebird.companion": {
+          "type": "string",
+          "enum": [
+            "bird",
+            "cat",
+            "bot",
+            "fox",
+            "frog",
+            "ghost"
+          ],
+          "enumDescriptions": [
+            "🐦 Pip (Bluebird) — Flapping wings, crest bounce & chattering beak",
+            "🐱 Mochi (Desk Cat) — Swishing tail, twitching ears & front paws",
+            "🤖 Byte (Mini Bot) — Pulsing beacon, antenna & glowing cyan LED visor",
+            "🦊 Rusty (Red Fox) — Swaying fluffy tail & pointed perked ears",
+            "🐸 Kero (Zen Frog) — Tilting lotus leaf cap & gentle breathing belly",
+            "👻 Boo (Lil Ghost) — Floating wavy arms & soft ethereal float ripple"
+          ],
+          "default": "bird",
+          "description": "Choose your floating AI coding companion: 'bird' (Pip), 'cat' (Mochi), 'bot' (Byte), 'fox' (Rusty), 'frog' (Kero), or 'ghost' (Boo)."
+        },
+        "codebird.stealthMode": {
+          "type": "string",
+          "enum": [
+            "off",
+            "ghost",
+            "peek",
+            "auto-heal",
+            "screen-shield"
+          ],
+          "default": "off",
+          "description": "Stealth Mode: 'off' (Normal), 'ghost' (No floating window, 100% inline editor brain), 'peek' (Invisible until a bug appears), 'auto-heal' (Silently fixes bugs automatically), 'screen-shield' (Visible to you, invisible on Zoom/Meet/OBS screen share)."
+        },
+        "codebird.aiProvider": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "gemini",
+            "openai",
+            "groq",
+            "ollama",
+            "local-smart"
+          ],
+          "default": "auto",
+          "description": "AI Provider powering the bird's brain ('auto' tries configured API key, then local Ollama, then built-in smart analyzer)."
+        },
+        "codebird.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for Gemini, OpenAI, or Groq."
+        },
+        "codebird.model": {
+          "type": "string",
+          "default": "",
+          "description": "Optional custom model name (e.g. gemini-2.5-flash, gpt-4o-mini, llama-3.3-70b-versatile, qwen2.5-coder:7b)."
+        },
+        "codebird.ollamaUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:11434",
+          "description": "Base URL for local Ollama server."
+        },
+        "codebird.roamMode": {
+          "type": "string",
+          "enum": [
+            "free-roam",
+            "follow-mouse",
+            "perch"
+          ],
+          "default": "free-roam",
+          "description": "How the bird moves around your workspace."
+        },
+        "codebird.proactiveSuggestions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically fly over and suggest fixes when errors or suspicious code patterns are detected."
+        },
+        "codebird.pauseDelayMs": {
+          "type": "number",
+          "default": 1800,
+          "description": "Milliseconds to wait after typing pauses before the bird analyzes your current line."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "overlay": "electron ./overlay/main.js",
+    "demo": "npm run compile && node ./scripts/run-demo.js",
+    "install-all": "npm run compile && node ./scripts/install-everywhere.js",
+    "uninstall-all": "node ./scripts/install-everywhere.js --uninstall"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@types/ws": "^8.5.10",
+    "electron": "^33.2.0",
+    "typescript": "^5.4.5"
+  }
+}
+

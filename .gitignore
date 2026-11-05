@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Compiled TypeScript output
+out/
+dist/
+
+# Extension packages
+*.vsix
+
+# VS Code test harness
+.vscode-test/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & local credentials
+.env
+.env.local
+.env.*.local

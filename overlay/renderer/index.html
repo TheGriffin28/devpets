@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChirpAI - Pip the CodeBird</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- Particle layer for feathers, hearts, sparkles, and zzz -->
+  <div id="particle-layer"></div>
+
+  <!-- Main Floating Bird + Speech Bubble Rig -->
+  <div id="bird-stage" class="interactive-zone">
+    <!-- Floating Mood Badge above the bird -->
+    <div id="bird-badge" class="bird-badge hidden">💡</div>
+
+    <!-- Cute Custom Vector SVG Bird ("Pip") -->
+    <div id="bird-character" title="Click to toggle bubble • Drag to move • Double-click to pet Pip!">
+      <svg id="bird-svg" viewBox="0 0 140 140" width="66" height="66" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Bird Gradients -->
+          <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="55%" stop-color="#2563eb" />
+            <stop offset="100%" stop-color="#1d4ed8" />
+          </linearGradient>
+          <linearGradient id="bellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#e0f2fe" />
+          </linearGradient>
+          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0284c7" />
+            <stop offset="100%" stop-color="#1e3a8a" />
+          </linearGradient>
+          <linearGradient id="beakGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#f59e0b" />
+          </linearGradient>
+
+          <!-- Cat Gradients -->
+          <linearGradient id="catBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f1f5f9" />
+          </linearGradient>
+          <linearGradient id="catPatchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fb923c" />
+            <stop offset="100%" stop-color="#ea580c" />
+          </linearGradient>
+
+          <!-- Bot Gradients -->
+          <linearGradient id="botBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#64748b" />
+            <stop offset="100%" stop-color="#334155" />
+          </linearGradient>
+          <linearGradient id="botVisorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0f172a" />
+            <stop offset="100%" stop-color="#0284c7" />
+          </linearGradient>
+
+          <!-- Fox Gradients -->
+          <linearGradient id="foxFurGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#c2410c" />
+          </linearGradient>
+
+          <!-- Frog Gradients -->
+          <linearGradient id="frogBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#4ade80" />
+            <stop offset="100%" stop-color="#16a34a" />
+          </linearGradient>
+          <linearGradient id="frogBellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#bbf7d0" />
+            <stop offset="100%" stop-color="#86efac" />
+          </linearGradient>
+
+          <!-- Ghost Gradients -->
+          <linearGradient id="ghostBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#cffafe" />
+          </linearGradient>
+
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#0f172a" flood-opacity="0.38" />
+          </filter>
+        </defs>
+
+        <!-- 1. BIRD RIG (Pip) -->
+        <g id="rig-bird" class="companion-rig" filter="url(#softShadow)">
+          <g id="tail-group" transform="translate(70, 102)">
+            <path d="M -14 0 Q -22 18 -10 22 Q 0 16 0 4 Z" fill="#1e40af" />
+            <path d="M 14 0 Q 22 18 10 22 Q 0 16 0 4 Z" fill="#1e40af" />
+            <path d="M -6 2 Q 0 24 6 2 Z" fill="#2563eb" />
+          </g>
+          <g id="feet-group">
+            <path id="foot-left" d="M 54 108 L 48 119 M 54 108 L 54 120 M 54 108 L 60 119" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path id="foot-right" d="M 86 108 L 80 119 M 86 108 L 86 120 M 86 108 L 92 119" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <g id="wing-left" transform="translate(34, 68)">
+            <path d="M 8 -10 C -18 -6, -24 24, -6 34 C 4 38, 14 22, 12 6 Z" fill="url(#wingGrad)" />
+          </g>
+          <g id="wing-right" transform="translate(106, 68)">
+            <path d="M -8 -10 C 18 -6, 24 24, 6 34 C -4 38, -14 22, -12 6 Z" fill="url(#wingGrad)" />
+          </g>
+          <ellipse id="bird-body" cx="70" cy="74" rx="38" ry="37" fill="url(#bodyGrad)" />
+          <ellipse cx="70" cy="83" rx="26" ry="25" fill="url(#bellyGrad)" />
+          <path d="M 60 76 Q 64 80 68 76" stroke="#bae6fd" stroke-width="2" fill="none" stroke-linecap="round" />
+          <path d="M 72 76 Q 76 80 80 76" stroke="#bae6fd" stroke-width="2" fill="none" stroke-linecap="round" />
+          <path d="M 66 84 Q 70 88 74 84" stroke="#bae6fd" stroke-width="2" fill="none" stroke-linecap="round" />
+          <g id="head-crest" transform="translate(70, 38)">
+            <path d="M -3 2 C -12 -16, -2 -22, 2 -6" fill="#38bdf8" />
+            <path d="M 2 2 C 8 -18, 18 -14, 7 -2" fill="#0284c7" />
+          </g>
+          <ellipse id="cheek-left" cx="44" cy="68" rx="6.5" ry="4" fill="#fb7185" opacity="0.55" />
+          <ellipse id="cheek-right" cx="96" cy="68" rx="6.5" ry="4" fill="#fb7185" opacity="0.55" />
+          <g id="eyes-open">
+            <circle cx="53" cy="58" r="10" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+            <g id="pupil-left">
+              <circle cx="54" cy="58" r="6" fill="#0f172a" />
+              <circle cx="56" cy="55.5" r="2.2" fill="#ffffff" />
+            </g>
+            <circle cx="87" cy="58" r="10" fill="#ffffff" stroke="#0f172a" stroke-width="1.5" />
+            <g id="pupil-right">
+              <circle cx="86" cy="58" r="6" fill="#0f172a" />
+              <circle cx="88" cy="55.5" r="2.2" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="eyes-happy" class="hidden">
+            <path d="M 44 58 Q 53 49 62 58" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 78 58 Q 87 49 96 58" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <g id="eyebrows-alert" class="hidden">
+            <line x1="43" y1="45" x2="61" y2="50" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+            <line x1="97" y1="45" x2="79" y2="50" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+          </g>
+          <g id="smart-glasses" class="hidden">
+            <circle cx="53" cy="58" r="12" fill="rgba(56, 189, 248, 0.12)" stroke="#fbbf24" stroke-width="2.2" />
+            <circle cx="87" cy="58" r="12" fill="rgba(56, 189, 248, 0.12)" stroke="#fbbf24" stroke-width="2.2" />
+            <line x1="65" y1="58" x2="75" y2="58" stroke="#fbbf24" stroke-width="2.2" />
+          </g>
+          <g id="beak-group" transform="translate(70, 64)">
+            <polygon id="beak-upper" points="-7,0 7,0 0,8" fill="url(#beakGrad)" stroke="#d97706" stroke-width="1" />
+            <polygon id="beak-lower" points="-4,2 4,2 0,10" fill="#d97706" />
+          </g>
+        </g>
+
+        <!-- 2. CAT RIG (Mochi) -->
+        <g id="rig-cat" class="companion-rig hidden" filter="url(#softShadow)">
+          <path id="cat-tail" d="M 96 86 C 122 82, 128 50, 114 42 C 106 38, 102 50, 106 66 Z" fill="url(#catPatchGrad)" />
+          <g id="cat-ears">
+            <polygon id="cat-ear-left" points="40,54 32,28 60,42" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2" />
+            <polygon points="41,51 35,34 56,43" fill="#fda4af" />
+            <polygon id="cat-ear-right" points="100,54 108,28 80,42" fill="#ea580c" stroke="#c2410c" stroke-width="1.2" />
+            <polygon points="99,51 105,34 84,43" fill="#fda4af" />
+          </g>
+          <ellipse id="cat-body" cx="70" cy="74" rx="36" ry="32" fill="url(#catBodyGrad)" />
+          <path d="M 68 44 Q 96 42 98 72 Q 82 74 68 44 Z" fill="url(#catPatchGrad)" opacity="0.9" />
+          <ellipse cx="44" cy="70" rx="5" ry="3.5" fill="#fda4af" opacity="0.6" />
+          <ellipse cx="96" cy="70" rx="5" ry="3.5" fill="#fda4af" opacity="0.6" />
+          <!-- Whiskers -->
+          <line x1="32" y1="70" x2="48" y2="72" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" />
+          <line x1="33" y1="76" x2="47" y2="75" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" />
+          <line x1="108" y1="70" x2="92" y2="72" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" />
+          <line x1="107" y1="76" x2="93" y2="75" stroke="#94a3b8" stroke-width="1.2" stroke-linecap="round" />
+          <!-- Cat Eyes -->
+          <g id="cat-eyes-open">
+            <circle cx="53" cy="60" r="9" fill="#ffffff" stroke="#0f172a" stroke-width="1.2" />
+            <g id="cat-pupil-left">
+              <circle cx="53" cy="60" r="5.5" fill="#0f172a" />
+              <ellipse cx="53" cy="60" rx="2.5" ry="5" fill="#0284c7" />
+              <circle cx="55" cy="58" r="1.8" fill="#ffffff" />
+            </g>
+            <circle cx="87" cy="60" r="9" fill="#ffffff" stroke="#0f172a" stroke-width="1.2" />
+            <g id="cat-pupil-right">
+              <circle cx="87" cy="60" r="5.5" fill="#0f172a" />
+              <ellipse cx="87" cy="60" rx="2.5" ry="5" fill="#0284c7" />
+              <circle cx="89" cy="58" r="1.8" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="cat-eyes-happy" class="hidden">
+            <path d="M 45 60 Q 53 52 61 60" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 79 60 Q 87 52 95 60" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <!-- Cat Nose & Mouth -->
+          <polygon points="68,68 72,68 70,71" fill="#fb7185" />
+          <path d="M 66 72 Q 70 75 70 72 Q 70 75 74 72" stroke="#475569" stroke-width="1.6" fill="none" stroke-linecap="round" />
+          <!-- Front Paws -->
+          <ellipse cx="56" cy="98" rx="8" ry="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+          <ellipse cx="84" cy="98" rx="8" ry="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+        </g>
+
+        <!-- 3. ROBOT RIG (Byte) -->
+        <g id="rig-bot" class="companion-rig hidden" filter="url(#softShadow)">
+          <g id="bot-antenna">
+            <line x1="70" y1="44" x2="70" y2="26" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+            <circle id="bot-beacon" cx="70" cy="24" r="6" fill="#38bdf8" stroke="#bae6fd" stroke-width="1.5" />
+          </g>
+          <rect id="bot-body" x="38" y="44" width="64" height="52" rx="14" fill="url(#botBodyGrad)" stroke="#64748b" stroke-width="1.5" />
+          <!-- Screws -->
+          <circle cx="44" cy="50" r="1.8" fill="#94a3b8" />
+          <circle cx="96" cy="50" r="1.8" fill="#94a3b8" />
+          <circle cx="44" cy="90" r="1.8" fill="#94a3b8" />
+          <circle cx="96" cy="90" r="1.8" fill="#94a3b8" />
+          <!-- Visor Screen -->
+          <rect x="44" y="52" width="52" height="32" rx="8" fill="url(#botVisorGrad)" stroke="#38bdf8" stroke-width="1.2" />
+          <!-- LED Eyes -->
+          <g id="bot-eyes-open">
+            <g id="bot-pupil-left">
+              <rect x="50" y="60" width="12" height="15" rx="3" fill="#22d3ee" />
+              <rect x="52" y="62" width="4" height="4" fill="#ffffff" />
+            </g>
+            <g id="bot-pupil-right">
+              <rect x="78" y="60" width="12" height="15" rx="3" fill="#22d3ee" />
+              <rect x="80" y="62" width="4" height="4" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="bot-eyes-happy" class="hidden">
+            <path d="M 49 70 L 56 61 L 63 70" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round" fill="none" />
+            <path d="M 77 70 L 84 61 L 91 70" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round" fill="none" />
+          </g>
+          <!-- Thruster -->
+          <g id="bot-thruster" transform="translate(70, 96)">
+            <polygon points="-8,0 8,0 5,6 -5,6" fill="#475569" />
+            <polygon id="bot-flame" points="-4,6 4,6 0,14" fill="#38bdf8" opacity="0.9" />
+          </g>
+        </g>
+
+        <!-- 4. FOX RIG (Rusty) -->
+        <g id="rig-fox" class="companion-rig hidden" filter="url(#softShadow)">
+          <path id="fox-tail" d="M 96 88 C 124 84, 134 48, 110 36 C 96 30, 92 58, 96 88 Z" fill="url(#foxFurGrad)" />
+          <path d="M 120 46 C 114 40, 108 38, 110 36 C 118 40, 124 44, 120 46 Z" fill="#ffffff" />
+          <g id="fox-ears">
+            <polygon id="fox-ear-left" points="38,52 28,24 60,40" fill="url(#foxFurGrad)" stroke="#9a3412" stroke-width="1.2" />
+            <polygon points="40,49 32,30 57,41" fill="#ffffff" />
+            <polygon id="fox-ear-right" points="102,52 112,24 80,40" fill="url(#foxFurGrad)" stroke="#9a3412" stroke-width="1.2" />
+            <polygon points="100,49 108,30 83,41" fill="#ffffff" />
+          </g>
+          <ellipse id="fox-body" cx="70" cy="74" rx="36" ry="32" fill="url(#foxFurGrad)" />
+          <polygon points="34,72 48,86 56,70" fill="#ffffff" />
+          <polygon points="106,72 92,86 84,70" fill="#ffffff" />
+          <ellipse cx="70" cy="84" rx="18" ry="16" fill="#ffffff" />
+          <g id="fox-eyes-open">
+            <circle cx="53" cy="60" r="9" fill="#ffffff" stroke="#9a3412" stroke-width="1.2" />
+            <g id="fox-pupil-left">
+              <circle cx="54" cy="60" r="5.2" fill="#78350f" />
+              <circle cx="56" cy="58" r="1.8" fill="#ffffff" />
+            </g>
+            <circle cx="87" cy="60" r="9" fill="#ffffff" stroke="#9a3412" stroke-width="1.2" />
+            <g id="fox-pupil-right">
+              <circle cx="86" cy="60" r="5.2" fill="#78350f" />
+              <circle cx="88" cy="58" r="1.8" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="fox-eyes-happy" class="hidden">
+            <path d="M 45 60 Q 53 52 61 60" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 79 60 Q 87 52 95 60" stroke="#78350f" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <ellipse cx="70" cy="71" rx="4" ry="3" fill="#0f172a" />
+        </g>
+
+        <!-- 5. FROG RIG (Kero) -->
+        <g id="rig-frog" class="companion-rig hidden" filter="url(#softShadow)">
+          <circle cx="48" cy="50" r="14" fill="url(#frogBodyGrad)" stroke="#15803d" stroke-width="1.5" />
+          <circle cx="92" cy="50" r="14" fill="url(#frogBodyGrad)" stroke="#15803d" stroke-width="1.5" />
+          <circle cx="48" cy="50" r="10.5" fill="#ffffff" />
+          <circle cx="92" cy="50" r="10.5" fill="#ffffff" />
+          <g id="frog-eyes-open">
+            <g id="frog-pupil-left">
+              <ellipse cx="48" cy="50" rx="6.5" ry="4" fill="#0f172a" />
+              <circle cx="50" cy="48" r="1.6" fill="#ffffff" />
+            </g>
+            <g id="frog-pupil-right">
+              <ellipse cx="92" cy="50" rx="6.5" ry="4" fill="#0f172a" />
+              <circle cx="94" cy="48" r="1.6" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="frog-eyes-happy" class="hidden">
+            <path d="M 40 50 Q 48 42 56 50" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path d="M 84 50 Q 92 42 100 50" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none" />
+          </g>
+          <ellipse id="frog-body" cx="70" cy="78" rx="36" ry="28" fill="url(#frogBodyGrad)" />
+          <ellipse id="frog-belly" cx="70" cy="85" rx="24" ry="18" fill="url(#frogBellyGrad)" />
+          <ellipse cx="44" cy="75" rx="5.5" ry="3.5" fill="#f472b6" opacity="0.6" />
+          <ellipse cx="96" cy="75" rx="5.5" ry="3.5" fill="#f472b6" opacity="0.6" />
+          <path d="M 58 76 Q 70 84 82 76" stroke="#15803d" stroke-width="2" fill="none" stroke-linecap="round" />
+          <!-- Lotus Leaf Hat -->
+          <g id="frog-leaf" transform="translate(70, 38)">
+            <path d="M -12 0 C -16 -8, 0 -10, 12 -4 C 14 4, 4 6, -12 0 Z" fill="#22c55e" stroke="#15803d" stroke-width="1.2" />
+            <path d="M 0 -7 L 2 -12" stroke="#15803d" stroke-width="1.5" fill="none" />
+          </g>
+        </g>
+
+        <!-- 6. GHOST RIG (Boo) -->
+        <g id="rig-ghost" class="companion-rig hidden" filter="url(#softShadow)">
+          <path id="ghost-body" d="M 38 72 C 38 44, 48 34, 70 34 C 92 34, 102 44, 102 72 C 102 96, 96 102, 88 98 C 82 94, 78 102, 70 98 C 62 94, 58 102, 52 98 C 44 94, 38 94, 38 72 Z" fill="url(#ghostBodyGrad)" stroke="#bae6fd" stroke-width="1.5" />
+          <path id="ghost-arm-left" d="M 40 70 Q 26 66 32 76" stroke="#bae6fd" stroke-width="4.5" stroke-linecap="round" fill="none" />
+          <path id="ghost-arm-right" d="M 100 70 Q 114 66 108 76" stroke="#bae6fd" stroke-width="4.5" stroke-linecap="round" fill="none" />
+          <ellipse cx="48" cy="69" rx="4.5" ry="3.5" fill="#fda4af" opacity="0.65" />
+          <ellipse cx="92" cy="69" rx="4.5" ry="3.5" fill="#fda4af" opacity="0.65" />
+          <g id="ghost-eyes-open">
+            <g id="ghost-pupil-left">
+              <ellipse cx="56" cy="62" rx="4.5" ry="6.5" fill="#0f172a" />
+              <circle cx="58" cy="59" r="1.8" fill="#ffffff" />
+            </g>
+            <g id="ghost-pupil-right">
+              <ellipse cx="84" cy="62" rx="4.5" ry="6.5" fill="#0f172a" />
+              <circle cx="86" cy="59" r="1.8" fill="#ffffff" />
+            </g>
+          </g>
+          <g id="ghost-eyes-happy" class="hidden">
+            <path d="M 50 62 Q 56 56 62 62" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <path d="M 78 62 Q 84 56 90 62" stroke="#0f172a" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          </g>
+          <path d="M 67 71 Q 70 74 73 71" stroke="#0f172a" stroke-width="1.6" fill="none" stroke-linecap="round" />
+        </g>
+      </svg>
+
+      <!-- Mini Live Radar Pill under the bird showing active file & line -->
+      <div id="bird-radar-pill">
+        <span id="radar-dot" class="dot-online"></span>
+        <span id="radar-text">Watching workspace...</span>
+      </div>
+    </div>
+
+    <!-- Glassmorphic Speech Bubble -->
+    <div id="speech-bubble" class="speech-bubble">
+      <!-- Top Header -->
+      <div class="bubble-header">
+        <div class="bubble-title-wrap">
+          <span id="bubble-severity-pill" class="sev-pill sev-info">DEVPETS AI</span>
+          <span id="bubble-location" class="bubble-location">Workspace Ready</span>
+        </div>
+        <div class="bubble-actions-top">
+          <button id="btn-roam-mode" class="icon-btn" title="Switch Roaming Mode (Alt+M)">🕊️ Free</button>
+          <button id="btn-stealth-mode" class="icon-btn" title="Switch Stealth Mode (Alt+S): Off / Peek-on-Error / Screen-Share Shield / Auto-Healer / Ghost">🐦 Vis</button>
+          <button id="btn-chat-history" class="icon-btn" title="Toggle Conversation History &amp; Implementation Plan">💬</button>
+          <button id="btn-scan-file" class="icon-btn" title="Inspect Active File Now">🔍</button>
+          <button id="btn-scan-project" class="icon-btn" title="Scan Entire Project">📁</button>
+          <button id="btn-settings" class="icon-btn" title="Configure AI Brain &amp; Stealth Settings">⚙️</button>
+          <button id="btn-sleep" class="icon-btn" title="Send Pip to Sleep / Close Overlay (Wake anytime from status bar or Alt+S)">💤</button>
+          <button id="btn-minimize" class="icon-btn" title="Minimize Bubble">✕</button>
+        </div>
+      </div>
+
+      <!-- Main Issue / Suggestion Content -->
+      <div id="bubble-body" class="bubble-body">
+        <!-- Multi-Line Selection Action Bar (Appears automatically when code is highlighted in VS Code) -->
+        <div id="selection-toolbar" class="selection-toolbar hidden">
+          <div id="selection-label" class="section-label label-selection">✂️ SELECTED LINES 1–5</div>
+          <div class="selection-btn-row">
+            <button class="sel-action-btn" data-action="refactor" title="Refactor & fix bugs in selection">✨ Refactor</button>
+            <button class="sel-action-btn" data-action="try-catch" title="Wrap selection in try/catch">🛡️ try/catch</button>
+            <button class="sel-action-btn" data-action="add-comments" title="Add JSDoc & inline comments">📝 Comments</button>
+            <button class="sel-action-btn" data-action="explain" title="Explain what this selection does">🔍 Explain</button>
+          </div>
+        </div>
+
+        <!-- Live Issue View -->
+        <div id="issue-view-container">
+          <div id="issue-headline" class="issue-headline">Hi! I'm Pip, your AI Code Bird 🐦</div>
+          <div class="section-block">
+            <div id="whats-wrong-label" class="section-label label-wrong hidden">❌ WHAT'S WRONG</div>
+            <div id="issue-whats-wrong" class="issue-whats-wrong">
+              I roam around your workspace, track your mouse and active line of code, and alert you whenever something looks wrong!
+            </div>
+          </div>
+          <div id="issue-what-to-do" class="issue-what-to-do hidden"></div>
+
+          <!-- Code Diff Preview Box -->
+          <div id="code-diff-box" class="code-diff-box hidden">
+            <div class="section-label label-solution">✅ SOLUTION (BEFORE vs AFTER)</div>
+            <div class="diff-line diff-remove">
+              <span class="diff-sign">-</span>
+              <code id="diff-original"></code>
+            </div>
+            <div class="diff-line diff-add">
+              <span class="diff-sign">+</span>
+              <code id="diff-fixed"></code>
+            </div>
+          </div>
+
+          <!-- Primary Action Buttons -->
+          <div id="suggestion-buttons" class="suggestion-buttons hidden">
+            <button id="btn-apply-fix" class="btn-primary">✨ Fix It For Me</button>
+            <button id="btn-jump-line" class="btn-secondary">🎯 Go to Line</button>
+            <button id="btn-dismiss" class="btn-ghost">Dismiss</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Conversation History & Multi-File Project Implementation Plan -->
+        <div id="chat-history-panel" class="chat-history-panel hidden">
+          <div class="chat-history-header">
+            <span class="section-label label-selection">💬 CONVERSATION HISTORY &amp; PROJECT PLAN</span>
+            <button id="btn-clear-chat" class="btn-ghost-xs" title="Clear conversation history">🗑️ Clear</button>
+          </div>
+          <div id="chat-history-list" class="chat-history-list"></div>
+        </div>
+      </div>
+
+      <!-- Collapsible AI & Companion Settings Drawer -->
+      <div id="settings-drawer" class="settings-drawer hidden">
+        <div class="drawer-title">⚙️ Companion &amp; AI Settings</div>
+        <div class="form-row">
+          <label>Choose Companion</label>
+          <select id="select-companion">
+            <option value="bird">🐦 Pip (The Bluebird)</option>
+            <option value="cat">🐱 Mochi (Cozy Desk Cat)</option>
+            <option value="bot">🤖 Byte (Mini Robot)</option>
+            <option value="fox">🦊 Rusty (Red Fox)</option>
+            <option value="frog">🐸 Kero (Zen Frog)</option>
+            <option value="ghost">👻 Boo (Lil Ghost)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>AI Provider</label>
+          <select id="select-provider">
+            <option value="auto">Auto (Key / Ollama / Smart Engine)</option>
+            <option value="gemini">Google Gemini</option>
+            <option value="groq">Groq Cloud (Fast Llama 3.3)</option>
+            <option value="openai">OpenAI (GPT-4o-mini)</option>
+            <option value="ollama">Local Ollama (Offline)</option>
+            <option value="local-smart">Built-in Smart Engine</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>API Key</label>
+          <input id="input-api-key" type="password" placeholder="Paste Gemini / Groq / OpenAI key..." />
+        </div>
+        <div class="form-row">
+          <label>Model</label>
+          <select id="input-model">
+            <option value="gemini-3.8-flash">gemini-3.8-flash (Latest Next-Gen Flash)</option>
+            <option value="gemini-3.6-flash">gemini-3.6-flash (Fast &amp; High Availability)</option>
+            <option value="gemini-3.5-flash">gemini-3.5-flash (Stable Flash)</option>
+            <option value="gemini-2.5-pro">gemini-2.5-pro (Deep Reasoning)</option>
+            <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Groq)</option>
+            <option value="gpt-4o-mini">gpt-4o-mini (OpenAI)</option>
+            <option value="qwen2.5-coder:7b">qwen2.5-coder:7b (Local Ollama)</option>
+          </select>
+        </div>
+        <div class="drawer-actions">
+          <button id="btn-save-settings" class="btn-primary">Save Settings</button>
+          <button id="btn-disable-pip" class="btn-secondary" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);" title="Disable Pip everywhere">🛑 Disable Pip</button>
+        </div>
+      </div>
+
+      <!-- Quick Ask Pip Input Footer -->
+      <div class="bubble-footer">
+        <input
+          id="ask-input"
+          type="text"
+          placeholder="Ask Pip about this line or project..."
+          autocomplete="off"
+        />
+        <button id="btn-ask-send" class="btn-send" title="Ask Pip">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./bird.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
+
