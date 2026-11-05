@@ -4,7 +4,7 @@
 
 ### Free-Roaming AI Desktop Companions for Developers
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/saurav/devpets/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/TheGriffin28/devpets/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.85+-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)](https://code.visualstudio.com/)
 [![Gemini AI](https://img.shields.io/badge/AI-Gemini%20%7C%20Groq%20%7C%20OpenAI%20%7C%20Ollama-8E75C4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
@@ -87,7 +87,7 @@ DevPets scans your project structure and returns:
 ## 🚀 Quickstart
 
 ### Option A: Install Pre-Built `.vsix`
-1. Download the latest `devpets-1.0.0.vsix` from [Releases](https://github.com/saurav/devpets/releases).
+1. Download the latest `devpets-1.0.0.vsix` from [Releases](https://github.com/TheGriffin28/devpets/releases).
 2. Install via command line:
    ```bash
    code --install-extension devpets-1.0.0.vsix --force
@@ -98,7 +98,7 @@ DevPets scans your project structure and returns:
 ### Option B: Run from Source
 ```bash
 # 1. Clone repository
-git clone https://github.com/saurav/devpets.git
+git clone https://github.com/TheGriffin28/devpets.git
 cd devpets
 
 # 2. Install dependencies

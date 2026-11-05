@@ -7,12 +7,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/saurav/devpets.git"
+    "url": "https://github.com/TheGriffin28/devpets.git"
   },
   "bugs": {
-    "url": "https://github.com/saurav/devpets/issues"
+    "url": "https://github.com/TheGriffin28/devpets/issues"
   },
-  "homepage": "https://github.com/saurav/devpets#readme",
+  "homepage": "https://github.com/TheGriffin28/devpets#readme",
   "keywords": [
     "devpets",
     "desktop-pet",
